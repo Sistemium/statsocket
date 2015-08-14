@@ -1,5 +1,5 @@
 var expect = require('expect.js'),
-    statsock = require('..');
+    statsock = require('../app');
 
 describe('statsock', function() {
   it('should say hello', function(done) {
