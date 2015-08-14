@@ -10,9 +10,9 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   console.log('a user connected');
 
-  status.get(function (data){
+  status.events.on('data',function (data){
     socket.emit('news', {
-      type:'welcome',
+//      type:'welcome',
       status: data
     });
   });
