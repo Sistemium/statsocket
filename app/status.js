@@ -1,8 +1,13 @@
 var https = require('https');
+var EventEmitter = require('events').EventEmitter;
 
-function getCurrent(callback) {
+var events = new EventEmitter();
 
-  var statusUrl = 'https://api.sistemium.com/status?json';
+var statusUrl = 'https://api.sistemium.com/status?json';
+
+var lastData;
+
+function refreshData () {
 
   https.get(statusUrl, function(res) {
 
@@ -10,13 +15,13 @@ function getCurrent(callback) {
 
     res.on('data', function (chunk) {
       body += chunk;
-      console.log('Got response: ', chunk);
     });
 
     res.on('end', function () {
       var jsonData = JSON.parse(body);
-      console.log('Got response: ', jsonData);
-      callback(jsonData);
+      //console.log('Got response: ', jsonData);
+      lastData = jsonData;
+      events.emit('data',jsonData);
     });
 
   }).on('error', function(e) {
@@ -25,4 +30,11 @@ function getCurrent(callback) {
 
 }
 
-exports.get = getCurrent;
+events.on('newListener',function (ev,listener){
+  console.log('Got new listener');
+  listener(lastData);
+});
+
+setInterval (refreshData,1000);
+
+exports.events = events;
