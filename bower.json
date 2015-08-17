@@ -1,0 +1,21 @@
+{
+  "name": "statsocket",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Sistemium/statsocket",
+  "authors": [
+    "Albert <kovalevskij.albert@gmail.com>"
+  ],
+  "description": "socket server",
+  "main": "app/index.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "~1.4.4"
+  }
+}
