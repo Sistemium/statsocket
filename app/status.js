@@ -5,7 +5,7 @@ var events = new EventEmitter();
 
 var statusUrl = 'https://api.sistemium.com/status?json';
 
-var lastData;
+var lastData, interval;
 
 function refreshData () {
 
@@ -27,14 +27,14 @@ function refreshData () {
   }).on('error', function(e) {
     console.log('Got error: ', e);
   });
-
 }
-
-events.on('newListener',function (ev,listener){
-  console.log('Got new listener');
-  listener(lastData);
+events.on('unsubscribe', function () {
+  console.log('unsubsbcribe');
+  clearInterval(interval);
 });
 
-setInterval (refreshData,1000);
-
+events.on('subscribe', function () {
+  console.log('subsbcribe');
+  interval = setInterval(refreshData, 1000);
+});
 exports.events = events;
