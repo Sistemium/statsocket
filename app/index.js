@@ -26,6 +26,7 @@ io.on('connection', function(socket){
   socket.on('disconnect', function () {
     if (io.sockets.sockets.length === 0) {
       status.events.emit('unsubscribe');
+      connected = false;
     }
   });
 });
