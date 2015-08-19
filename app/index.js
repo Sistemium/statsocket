@@ -3,6 +3,7 @@ var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var status = require('./status.js');
+var activate = require('./activate');
 
 app.get('/', function(req, res){
   res.send('index.html');
@@ -15,6 +16,10 @@ io.on('connection', function(socket){
     connected = true;
     status.events.emit('subscribe');
   }
+
+  socket.on('activate', function (data) {
+    activate.events.emit('activate', data);
+  });
 
   status.events.on('data',function (data){
     socket.emit('news', {
