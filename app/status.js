@@ -6,7 +6,8 @@ var statusUrl = 'https://api.sistemium.com/status?json';
 
 var lastData, interval;
 
-var Status = function () {
+var Status = function (socket) {
+  this.socket = socket;
   var self = this;
 
   this.on('subscribe', function () {
@@ -32,7 +33,9 @@ var Status = function () {
         var jsonData = JSON.parse(body);
         //console.log('Got response: ', jsonData);
         lastData = jsonData;
-        self.emit('data',jsonData);
+        self.socket.emit('news', {
+          status: jsonData
+        });
       });
 
     }).on('error', function(e) {

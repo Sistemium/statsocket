@@ -3,7 +3,7 @@ var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Status = require('./status.js');
-var activate = require('./activate');
+var Activate = require('./activate');
 
 app.get('/', function(req, res){
   res.send('index.html');
@@ -14,18 +14,12 @@ var namespace = io.of('/namespace');
 namespace.on('connection', function(socket){
   console.log('a user connected');
 
-  var status = new Status();
+  var status = new Status(socket);
 
   if (!connected) {
     connected = true;
     status.emit('subscribe');
   }
-
-  status.on('data', function(data) {
-    socket.emit('news', {
-      status: data
-    })
-  });
 
   socket.on('subscribe', function () {
     if (!connected) {
@@ -35,7 +29,8 @@ namespace.on('connection', function(socket){
   });
 
   socket.on('activate', function (data) {
-    activate.events.emit('activate', data);
+    var activate = new Activate();
+    activate.emit('activate', data);
   });
 
   socket.on('disconnect', function () {
