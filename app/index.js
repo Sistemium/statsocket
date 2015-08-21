@@ -2,19 +2,18 @@ var app = require('express')();
 var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var Status = require('./status.js');
+var Status = require('./status.js').Status;
 var Activate = require('./activate');
 
 app.get('/', function(req, res){
   res.send('index.html');
 });
-var connected = false;
 
-var namespace = io.of('/namespace');
-namespace.on('connection', function(socket){
+var statusNS = io.of('/status');
+var status = new Status(socket);
+
+statusNS.on('connection', function(socket){
   console.log('a user connected');
-
-  var status = new Status(socket);
 
   if (!connected) {
     connected = true;
