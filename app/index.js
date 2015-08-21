@@ -2,7 +2,7 @@ var app = require('express')();
 var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var Status = require('./status.js').Status;
+var Status = require('./status.js');
 var Activate = require('./activate');
 
 app.get('/', function(req, res){
@@ -10,34 +10,26 @@ app.get('/', function(req, res){
 });
 
 var statusNS = io.of('/status');
-var status = new Status(socket);
-
+var status = new Status();
 statusNS.on('connection', function(socket){
   console.log('a user connected');
-
-  if (!connected) {
-    connected = true;
-    status.emit('subscribe');
-  }
-
-  socket.on('subscribe', function () {
-    if (!connected) {
-      connected = true;
-      status.emit('subscribe');
-    }
-  });
-
-  socket.on('activate', function (data) {
-    var activate = new Activate();
-    activate.emit('activate', data);
+  status.emit('subscribe');
+  status.on('data', function (data) {
+    socket.emit('news', {
+      status: data
+    })
   });
 
   socket.on('disconnect', function () {
-    if (io.sockets.sockets.length === 0) {
-      var status = new Status();
       status.emit('unsubscribe');
-      connected = false;
-    }
+  });
+});
+
+var activateNS = io.of('/activate');
+var activate = new Activate();
+activateNS.on('connection', function () {
+  socket.on('activate', function (data) {
+    activate.emit('activate', data);
   });
 });
 
