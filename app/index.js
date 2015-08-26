@@ -1,7 +1,7 @@
 var app = require('express')();
 var express = require('express');
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http,{pingTimeout: 5000, pingInterval: 5000});
 var Status = require('./status.js');
 var Activate = require('./activate');
 
@@ -12,7 +12,7 @@ app.get('/', function(req, res){
 var statusNS = io.of('/status');
 var status = new Status();
 statusNS.on('connection', function(socket){
-  socket.auth = false;
+  socket.auth = true;
   socket.on('authenticate', function(data){
     //check the auth data sent by the client
     console.log(data.token);
@@ -55,6 +55,6 @@ activateNS.on('connection', function () {
   });
 });
 
-http.listen(3000, function(){
+http.listen(4000, function(){
   console.log('listening on *:3000');
 });
