@@ -1,6 +1,6 @@
 var AWS = require('aws-sdk');
 AWS.config.update({region:'eu-west-1'});
-var config = require('./config');
+var config = require('./config').awsCredentials;
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 

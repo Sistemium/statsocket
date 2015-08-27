@@ -1,7 +1,11 @@
 var app = require('express')();
 var express = require('express');
 var http = require('http').Server(app);
-var io = require('socket.io')(http,{pingTimeout: 5000, pingInterval: 5000});
+var config = require('./config');
+
+var io = require('socket.io')(http,{
+  pingTimeout: config.pingTimeout, pingInterval: config.pingInterval
+});
 var Status = require('./status.js');
 var Activate = require('./activate');
 
@@ -55,6 +59,6 @@ activateNS.on('connection', function () {
   });
 });
 
-http.listen(4000, function(){
-  console.log('listening on *:3000');
+http.listen(config.port, function(){
+  console.log('listening on *:%d',config.port);
 });
