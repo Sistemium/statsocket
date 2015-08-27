@@ -4,20 +4,24 @@ var util = require('util');
 
 var statusUrl = 'https://api.sistemium.com/status?json';
 
-var lastData, interval;
+var lastData, interval, clientCount = 0;
 
-var Status = function (socket) {
-  this.socket = socket;
+var Status = function () {
   var self = this;
 
   this.on('subscribe', function () {
-    interval = setInterval(refreshData, 1000);
-    console.log('subscribe');
+    interval = interval || setInterval(refreshData, 1000);
+    clientCount++;
+    console.log('subscribe, clientCount:', clientCount);
   });
 
   this.on('unsubscribe', function () {
-    clearInterval(interval);
-    console.log('unsubscribe');
+    if (!--clientCount) {
+      clearInterval(interval);
+      interval = undefined;
+      console.log('interval cleared');
+    }
+    console.log('unsubscribe, clientCount:', clientCount);
   });
 
   function refreshData () {
@@ -33,9 +37,7 @@ var Status = function (socket) {
         var jsonData = JSON.parse(body);
         //console.log('Got response: ', jsonData);
         lastData = jsonData;
-        self.socket.emit('news', {
-          status: jsonData
-        });
+        self.emit('data', jsonData);
       });
 
     }).on('error', function(e) {
