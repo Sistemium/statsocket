@@ -47,8 +47,7 @@ var Status = function () {
 
       res.on('end', function () {
         var jsonData = JSON.parse(body);
-        //console.log('Got response: ', jsonData);
-        lastData = jsonData;
+        console.log('Got response: ', body.length, ' from: ', urlSt);
         self.emit('data', jsonData);
       });
 
