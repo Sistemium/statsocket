@@ -65,6 +65,9 @@ statusNS.on('connection', function(socket){
       status.emit('unsubscribe');
       console.log ('got disconnect');
   });
+  socket.on('unsubscribe', function () {
+      status.emit('unsubscribe');
+      console.log ('got unsubscribe');
   });
 });
 
