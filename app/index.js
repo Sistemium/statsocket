@@ -51,6 +51,14 @@ statusNS.on('connection', function(socket){
     socket.emit('news', {
       status: data
     })
+    });
+
+    if (data.processes) {
+      socket.emit('news-detailed', {
+        status: data.processes
+      })
+    }
+
   });
 
   socket.on('disconnect', function () {
