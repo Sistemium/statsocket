@@ -13,7 +13,7 @@
     <script>
         angular.module('app', [])
         .controller('ctrl', function ($scope) {
-            var socket = io.connect('http://localhost:3000');
+            var socket = io.connect('http://localhost:4000/status');
             socket.on('news', function (data) {
                 $scope.data = data;
                 socket.emit('my other event', { my: 'data' });
