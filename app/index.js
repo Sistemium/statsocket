@@ -48,9 +48,9 @@ statusNS.on('connection', function(socket){
   });
 
   status.on('data', function (data) {
+
     socket.emit('news', {
       status: data
-    })
     });
 
     if (data.processes) {
