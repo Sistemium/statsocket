@@ -37,7 +37,7 @@ var Status = function () {
   });
 
   function refreshData () {
-    https.get(statusUrl, function(res) {
+    https.get(urlSt, function(res) {
 
       var body = '';
 
