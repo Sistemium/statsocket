@@ -19,6 +19,13 @@ var Status = function () {
     console.log('subscribe, clientCount:', clientCount);
   });
 
+  this.on('subscribe-full', function () {
+    interval = interval || setInterval(refreshData, 1000);
+    clientCount++;
+    console.log('subscribe-full, clientCount:', clientCount);
+  });
+
+
   this.on('unsubscribe', function () {
     if (!--clientCount) {
       clearInterval(interval);
