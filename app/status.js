@@ -27,7 +27,8 @@ var Status = function () {
 
 
   this.on('unsubscribe', function () {
-    if (!--clientCount) {
+    if (--clientCount<=0) {
+      clientCount = 0;
       clearInterval(interval);
       interval = undefined;
       console.log('interval cleared');
