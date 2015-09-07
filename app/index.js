@@ -39,7 +39,14 @@ statusNS.on('connection', function(socket){
   }, 1000);
 
   console.log('a user connected');
-  status.emit('subscribe');
+
+  socket.on('subscribe',function (payload){
+    return payload === 'detailed' ?
+      status.emit('subscribe-full') :
+      status.emit('subscribe')
+    ;
+  });
+
   status.on('data', function (data) {
     socket.emit('news', {
       status: data

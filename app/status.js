@@ -2,11 +2,9 @@ var https = require('https');
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 
-
 var statusUrl = 'https://api.sistemium.com/status?json';
 var statusUrlFull = 'https://api.sistemium.com/status?json&full';
 var urlSt = statusUrlFull;
-
 
 var lastData, interval, clientCount = 0;
 
